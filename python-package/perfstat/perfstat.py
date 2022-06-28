@@ -163,7 +163,7 @@ def main():
     floatFormat = "%.4e"
     printOuput = 1
     printCmdOutput = 0
-    printCSV = 0
+    printCSV = 1
     for arg in sys.argv:
         if arg[0] == '-':
             flag = arg

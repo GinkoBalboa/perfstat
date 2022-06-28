@@ -25,11 +25,42 @@ If you use one of these two programs you can just supply the
 command for the performance of a program (here as an example is taken the `ls` command). 
 The metrics are auto-generated and the files with the results are saved at the given locations.
 
-The most simple case is the default:
+The most simple case is the default (the command requires sudo, so initially the system will ask 
+for credentials):
 
 ``` console
-python -m perfstat
-
+user@pc:~/Documents$ python -m perfstat
+Run command: 'sudo likwid-perfctr -C 0 -g CLOCK ls'
+Run count: 10
+Measuring: ['Runtime (RDTSC) [s]', 'Runtime unhalted [s]', 'Clock [MHz]', 'Uncore Clock [MHz]', 'CPI', 'Energy [J]', 'Power [W]']
+Separator: '|'
+Measurements file: ''
+Statistics file: ''
+Float format: '%.4e'
+[sudo] password for user: 
+Done: 100%
+        Runtime (RDTSC) [s]  Runtime unhalted [s]  Clock [MHz]  Uncore Clock [MHz]     CPI  Energy [J]  Power [W]
+Run ID                                                                                                           
+0                    0.0014                0.0002    3562.9367                 0.0  1.4209      0.0219    15.8320
+1                    0.0015                0.0002    2999.8756                 0.0  1.3766      0.0425    28.9588
+2                    0.0016                0.0002    2600.1929                 0.0  1.3642      0.0240    14.8284
+3                    0.0016                0.0002    2801.0958                 0.0  1.5310      0.0625    38.9571
+4                    0.0017                0.0002    2299.3991                 0.0  1.3631      0.0339    19.4133
+5                    0.0014                0.0002    3199.4962                 0.0  1.4354      0.0240    16.8569
+6                    0.0013                0.0002    3995.2261                 0.0  1.5017      0.0587    44.6264
+7                    0.0017                0.0002    2399.9842                 0.0  1.4123      0.0219    12.7339
+8                    0.0024                0.0002    1701.8149                 0.0  1.4640      0.0479    19.7376
+9                    0.0014                0.0002    3670.1753                 0.0  1.7845      0.0601    41.5754
+                        Runtime (RDTSC) [s]  Runtime unhalted [s]  Clock [MHz]  Uncore Clock [MHz]       CPI  Energy [J]  Power [W]
+Mean                               0.001600                0.0002  2923.019680                 0.0  1.465370    0.039740  25.351980
+Std. dev.                          0.000313                0.0000   704.950781                 0.0  0.125495    0.016774  12.167161
+Std. error                         0.000099                0.0000   222.925011                 0.0  0.039685    0.005304   3.847594
+Conf. inter. 90% (min)             0.001419                0.0002  2514.372960                 0.0  1.392623    0.030016  18.298905
+Conf. inter. 90% (max)             0.001781                0.0002  3331.666400                 0.0  1.538117    0.049464  32.405055
+Conf. inter. 95% (min)             0.001376                0.0002  2418.728270                 0.0  1.375597    0.027740  16.648117
+Conf. inter. 95% (max)             0.001824                0.0002  3427.311090                 0.0  1.555143    0.051740  34.055843
+Conf. inter. 99% (min)             0.001279                0.0002  2198.550056                 0.0  1.336401    0.022501  12.847931
+Conf. inter. 99% (max)             0.001921                0.0002  3647.489304                 0.0  1.594339    0.056979  37.856029
 ```
 
 ## Flags
@@ -62,7 +93,7 @@ There are the following flags that can be supplied from the command line.
 
 - **-pc print_cmd_output** Int (bool) that defines if the program will print every stdout from calling the command. (Default: 0).
 
-- **-pv print_csv** Int (bool) that defines if the program will print the measurements and statistics on the standard output.
+- **-pv print_csv** Int (bool) that defines if the program will print the measurements and statistics on the standard output. (Default: 1).
 
 ## Examples:
 
@@ -70,13 +101,63 @@ There are the following flags that can be supplied from the command line.
 reading the command.
 
 ``` console
-$ python -m perfstat -c "sudo perf stat ls" -r 30 -m "cycles,instructions" -fm "~/Documents/measurements.csv" -fs "~/Documents/stats.csv"
+user@pc:~/Documents$ python -m perfstat -c "sudo perf stat ls" -r 30 -m "cycles,instructions" -fm "~/Documents/measurements.csv" -fs "~/Documents/stats.csv"
+Run command: 'sudo perf stat ls'
+Run count: 30
+Measuring: ['cycles', 'instructions']
+Separator: ' '
+Measurements file: '~/Documents/measurements.csv'
+Statistics file: '~/Documents/stats.csv'
+Float format: '%.4e'
+Done: 100%
+           cycles  instructions
+Run ID                         
+0       2297607.0     1557603.0
+1       2409217.0     1550675.0
+2       2365400.0     1524057.0
+3       2400169.0     1557315.0
+4       2276937.0     1529382.0
+5       2210214.0     1545919.0
+6       2479832.0     1544244.0
+7       2263966.0     1542431.0
+8       2190710.0     1566473.0
+9       2330062.0     1563216.0
+10      2254009.0     1550485.0
+11      2316403.0     1550825.0
+12      2290797.0     1556676.0
+13      2245716.0     1564225.0
+14      1925554.0     1540289.0
+15      2223343.0     1552700.0
+16      2168010.0     1540918.0
+17      2150624.0     1516970.0
+18      2157178.0     1552543.0
+19      2232088.0     1553093.0
+20      2314820.0     1540224.0
+21      2153573.0     1555339.0
+22      2273797.0     1526145.0
+23      2334992.0     1570076.0
+24      2259947.0     1550779.0
+25      2293618.0     1559691.0
+26      2160072.0     1511287.0
+27      2360356.0     1547945.0
+28      1932100.0     1559604.0
+29      2217976.0     1558192.0
+                              cycles  instructions
+Mean                    2.249636e+06  1.547977e+06
+Std. dev.               1.191917e+05  1.442241e+04
+Std. error              2.176133e+04  2.633160e+03
+Conf. inter. 90% (min)  2.212661e+06  1.543503e+06
+Conf. inter. 90% (max)  2.286611e+06  1.552451e+06
+Conf. inter. 95% (min)  2.205129e+06  1.542592e+06
+Conf. inter. 95% (max)  2.294143e+06  1.553363e+06
+Conf. inter. 99% (min)  2.189654e+06  1.540719e+06
+Conf. inter. 99% (max)  2.309619e+06  1.555235e+06
 ```
 
-2. We want to print the results of `sudo likwid-perfctr -C 0 -g CLOCK ls` on screen:
+2. We want to print the results of `sudo likwid-perfctr -C 0 -g CLOCK ls` of 30 runs on screen:
 
 ```console
-$ python -m perfstat -r 30 -pv 1
+user@pc:~/Documents$ python -m perfstat -r 30
 Run command: 'sudo likwid-perfctr -C 0 -g CLOCK ls'
 Run count: 30
 Measuring: ['Runtime (RDTSC) [s]', 'Runtime unhalted [s]', 'Clock [MHz]', 'Uncore Clock [MHz]', 'CPI', 'Energy [J]', 'Power [W]']

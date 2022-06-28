@@ -17,11 +17,14 @@ if __name__ == '__main__':
     #   pip install perfstat
     # Locally for testing (from perfstat/python-packate dir)
     #   pip install -e . --force-reinstall -v
+    
+    # Build dist
+    # python setup.py bdist_wheel --plat-name manylinux2014_x86_64
 
     with open("../README.md", "r") as fh:
         long_description = fh.read()
 
-    tagName = "0.0.1"
+    tagName = "0.0.2"
 
     setuptools.setup(
         name="perfstat",
@@ -31,7 +34,7 @@ if __name__ == '__main__':
         description="Capturing performance statistics",
         packages=setuptools.find_packages(include=['perfstat', 'perfstat.*']),
         include_package_data=True,
-        # install_requires=['pandas'],
+        install_requires=['pandas'],
         long_description=long_description,
         long_description_content_type="text/markdown",
         project_urls={"github": "https://github.com/GinkoBalboa/perfstat"},
